@@ -3,9 +3,10 @@ dotenv.config();
 
 import fsPromises from "node:fs/promises";
 import { some } from "./common";
+import db from "db";
 
 if (true) {
-	const c = 1;
+  const c = 1;
 }
 console.log(process.env.PORT);
 fun1(1233);
@@ -17,6 +18,6 @@ some();
 // fun1('qwe');
 
 function fun1(n: number) {
-	// console.log(c);
-	console.log(n);
+  // console.log(c);
+  console.log(n);
 }

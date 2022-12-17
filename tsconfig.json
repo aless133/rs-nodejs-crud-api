@@ -16,6 +16,7 @@
     "outDir": "build/"
   },
   "include": ["./src/**/*", "styled.d.ts"],
+  "lib": ["esnext"],
   "ts-node": {
       "esm": true,
       "experimentalSpecifierResolution": "node"
