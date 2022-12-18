@@ -57,7 +57,7 @@ export const sendRequest: TRequestHandler = async (req) => {
     return { code: parsed.err.code, data: parsed.err.message };
   }
   return new Promise<IApiReturn>((resolve, reject) => {
-    const msg: IProcessMsg = { action: "db", payload: parsed.api };
+    const msg: IProcessMsg = { action: "dbCall", payload: parsed.api };
     console.log(`Worker ${process.pid} send message`, msg);
     process.send(msg, (dbRet) => {
       console.log(`Worker ${process.pid} got response`, dbRet);
