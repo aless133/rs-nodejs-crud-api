@@ -1,9 +1,9 @@
 import http from "node:http";
 import * as api from "./api";
-import { IApi } from "./types";
+import { IApiReturn, TRequestHandler } from "./types";
 
-export const createServer = (port: number) => {
-  const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+export const createServer = (port: number, action: TRequestHandler) => {
+  const server = http.createServer(async (req: http.IncomingMessage, res: http.ServerResponse) => {
     //skip favicon
     if (req.method == "GET" && req.url === "/favicon.ico") {
       res.writeHead(200, { "Content-Type": "image/x-icon" });
@@ -12,13 +12,14 @@ export const createServer = (port: number) => {
     }
 
     console.log("request", ":" + port, req.method, req.url);
-    let ret: IApi = { code: 0, data: "" };
+    let ret: IApiReturn = { code: 0, data: "" };
     try {
-      if (req.url && req.url.startsWith("/api/")) {
-        ret = api.handleRequest(req);
-      } else {
-        ret = { code: 404, data: api.messages.NOT_FOUND };
-      }
+      ret = await action(req);
+      // if (req.url && req.url.startsWith("/api/")) {
+      //   ret = api.handleRequest(req);
+      // } else {
+      //   ret = { code: 404, data: api.messages.NOT_FOUND };
+      // }
     } catch (err) {
       //console.error(err);
       ret.code = 500;
@@ -37,6 +38,7 @@ export const createServer = (port: number) => {
       res.end(ret.data);
     }
   });
+
   server.listen(port, () => {
     console.log("listening :" + port);
   });
