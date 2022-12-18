@@ -9,7 +9,9 @@
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix",
     "start": "npx eslint ./src && ts-node --esm src/index.ts",
-    "start:dev": "nodemon",
+    "start:multi": "npx eslint ./src && ts-node --esm src/index.ts --multi",
+    "start:dev": "nodemon run start",
+    "start:dev:multi": "nodemon run start:multi",
     "start:prod": "ts-node src/index.ts",
     "build": "npx eslint ./src && webpack --mode=production && node build/bundle.js"
   },
