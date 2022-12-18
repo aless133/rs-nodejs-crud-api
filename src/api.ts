@@ -1,7 +1,5 @@
-import { dbCall } from "./db";
 import { IncomingMessage } from "node:http";
-import { TRequestHandler, IParsedRequest, IApiCall, IDbReturn, IApiReturn, IProcessMsg } from "./types";
-import process from "node:process";
+import { IParsedRequest, IApiCall, IDbReturn, IApiReturn } from "./types";
 
 export enum messages {
   BAD_REQ = "Bad request",
@@ -35,33 +33,4 @@ export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
   } else {
     return { code: 200, data: "" };
   }
-};
-
-export const handleRequest: TRequestHandler = async (req) => {
-  const parsed = await parseRequest(req);
-  if (parsed.err) {
-    return { code: parsed.err.code, data: parsed.err.message };
-  } else if (parsed.api) {
-    const dbRet = dbCall(parsed.api);
-    return apiReturn(parsed.api, dbRet);
-  }
-  return { code: 500, data: messages.SERVER_ERROR };
-};
-
-export const sendRequest: TRequestHandler = async (req) => {
-  if (!process.send) {
-    return { code: 500, data: messages.SERVER_ERROR };
-  }
-  const parsed = await parseRequest(req);
-  if (parsed.err) {
-    return { code: parsed.err.code, data: parsed.err.message };
-  }
-  return new Promise<IApiReturn>((resolve, reject) => {
-    const msg: IProcessMsg = { action: "dbCall", payload: parsed.api };
-    console.log(`Worker ${process.pid} send message`, msg);
-    process.send(msg, (dbRet) => {
-      console.log(`Worker ${process.pid} got response`, dbRet);
-      resolve(apiReturn(parsed.api, dbRet));
-    });
-  });
 };

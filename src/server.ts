@@ -1,5 +1,4 @@
 import http from "node:http";
-import * as api from "./api";
 import { IApiReturn, TRequestHandler } from "./types";
 
 export const createServer = (port: number, action: TRequestHandler) => {
@@ -15,11 +14,6 @@ export const createServer = (port: number, action: TRequestHandler) => {
     let ret: IApiReturn = { code: 0, data: "" };
     try {
       ret = await action(req);
-      // if (req.url && req.url.startsWith("/api/")) {
-      //   ret = api.handleRequest(req);
-      // } else {
-      //   ret = { code: 404, data: api.messages.NOT_FOUND };
-      // }
     } catch (err) {
       //console.error(err);
       ret.code = 500;
@@ -31,12 +25,19 @@ export const createServer = (port: number, action: TRequestHandler) => {
     }
     res.statusCode = ret.code;
     console.log("result", ":" + port, ret.code, ret.data);
-    if (typeof ret.data === "object") {
-      res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify(ret.data, null, 3));
-    } else {
-      res.end(ret.data);
-    }
+    // if (ret.headers) {
+    //   Object.keys(ret.headers).forEach((k) => {
+    //     if (ret.headers) {
+    //       res.setHeader(k, ret.headers[k]);
+    //     }
+    //   });
+    // }
+    // if (typeof ret.data === "object") {
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(ret.data));
+    // } else {
+    // res.end(ret.data);
+    // }
   });
 
   server.listen(port, () => {

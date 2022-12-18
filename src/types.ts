@@ -1,4 +1,4 @@
-import { IncomingMessage } from "node:http";
+import { IncomingMessage, IncomingHttpHeaders } from "node:http";
 
 export interface IUserData {
   username: string;
@@ -14,6 +14,7 @@ export type TRequestHandler = (res: IncomingMessage) => Promise<IApiReturn>;
 export interface IApiReturn {
   code: number;
   data: string | IUser | IUser[]; //TJSONValue;
+  headers?: IncomingHttpHeaders;
 }
 
 export enum EDbErrors {
@@ -50,7 +51,9 @@ export interface IApiCall extends IApiParams {
 
 export interface IProcessMsg {
   action: string;
-  payload: IDbReturn | IApiCall;
+  send: IApiCall;
+  recv?: IDbReturn;
+  resolveId?: string;
 }
 
 // export type TJSONPrimitive = string | number | boolean | null;
