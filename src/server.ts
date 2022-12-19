@@ -32,12 +32,12 @@ export const createServer = (port: number, action: TRequestHandler) => {
     //     }
     //   });
     // }
-    // if (typeof ret.data === "object") {
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(ret.data));
-    // } else {
-    // res.end(ret.data);
-    // }
+    if (typeof ret.data === "object") {
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(ret.data));
+    } else {
+      res.end(ret.data);
+    }
   });
 
   server.listen(port, () => {

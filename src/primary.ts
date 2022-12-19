@@ -55,7 +55,9 @@ export const balanceRequest: TRequestHandler = async (req): Promise<IApiReturn> 
       },
       async (res1: IncomingMessage) => {
         const res: IApiReturn = { code: res1.statusCode ?? 0, data: await getBody(res1) };
-        // if (res1.headers) res.headers = res1.headers;
+        if (res1.headers["content-type"] === "application/json") {
+          res.data = JSON.parse(res.data as string); // что бы не было проблем с кодировками
+        }
         resolve(res);
       },
     );
