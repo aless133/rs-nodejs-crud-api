@@ -1,5 +1,5 @@
 import { IncomingMessage } from "node:http";
-import { IParsedRequest, IApiCall, IDbReturn, IApiReturn } from "./types";
+import { IParsedRequest, IApiCall, IDbReturn, IApiReturn, EDbErrors } from "./types";
 
 export enum messages {
   BAD_REQ = "Bad request",
@@ -9,16 +9,16 @@ export enum messages {
 
 export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest> => {
   if (!req.url) return { err: { code: 404, message: "Endpoint not found" } };
-  const parts = req.url.split("/");
+  const parts = req.url.split("/").filter((e) => !!e);
 
   //all
-  if (parts[2] === "users" && parts.length === 3) {
+  if (parts[1] === "users" && parts.length === 2) {
     return { api: { method: "getAll" } };
   }
 
   //single
-  else if (parts[2] === "users" && parts.length === 4) {
-    return { api: { method: "get", params: { userId: parts[3] } } };
+  else if (parts[1] === "users" && parts.length === 3) {
+    return { api: { method: "get", params: { userId: parts[2] } } };
   }
 
   //else 404
@@ -27,7 +27,13 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
 
 export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
   if (dbRet.err) {
-    return { code: dbRet.err.code, data: dbRet.err.message };
+    const ret: IApiReturn = { code: 0, data: "Database error: " + dbRet.err.message };
+    if (dbRet.err.code === EDbErrors.INVALID_DATA) {
+      ret.code = 400;
+    } else if (dbRet.err.code === EDbErrors.NOT_FOUND) {
+      ret.code = 404;
+    }
+    return ret;
   } else if (dbRet.data) {
     return { code: 200, data: dbRet.data };
   } else {
