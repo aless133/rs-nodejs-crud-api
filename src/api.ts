@@ -13,7 +13,7 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
 
   //all
   if (parts[1] === "users" && parts.length === 2) {
-    return { api: { method: "getAll" } };
+    return { api: { method: "getAll", params: {} } };
   }
 
   //single

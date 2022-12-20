@@ -1,3 +1,4 @@
+import { version as uuidVersion, validate as uuidValidate, v4 as uuidv4 } from "uuid";
 import { IUser, IApiCall, TDb, IDbReturn, EDbErrors } from "./types";
 
 const data: Record<string, IUser> = {
@@ -18,13 +19,15 @@ const data: Record<string, IUser> = {
 // const db = new EventEmitter();
 
 const db: TDb = {
-  getAll({ params }) {
+  getAll({}) {
     return { data: Object.keys(data).map((key) => data[key]) };
   },
-  get({ params }) {
-    if (params && params.userId) {
-      if (data[params.userId]) {
-        return { data: data[params.userId] };
+  get({ params: { userId } }) {
+    if (userId) {
+      if (!uuidValidate(userId)) {
+        return { err: { code: EDbErrors.INVALID_DATA, message: "Invalid userId" } };
+      } else if (data[userId]) {
+        return { data: data[userId] };
       } else {
         return { err: { code: EDbErrors.NOT_FOUND, message: "User not found" } };
       }
@@ -36,3 +39,7 @@ const db: TDb = {
 export const dbCall = (p: IApiCall): IDbReturn => {
   return db[p.method](p);
 };
+
+function uuidValidateV4(uuid: string) {
+  return uuidValidate(uuid) && uuidVersion(uuid) === 4;
+}

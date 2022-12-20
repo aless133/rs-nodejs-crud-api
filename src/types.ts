@@ -42,7 +42,9 @@ export interface IParsedRequest {
 }
 
 export interface IApiParams {
-  params?: Record<string, string>;
+  params: {
+    userId?: string;
+  }; //Record<string, string>;
   data?: IUser; //TJSONValue;
 }
 export interface IApiCall extends IApiParams {
