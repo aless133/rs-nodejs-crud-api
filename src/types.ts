@@ -28,7 +28,7 @@ interface IError {
 }
 
 type TDbMethod = (p: IApiParams) => IDbReturn;
-type TDbMethodsList = "getAll" | "get";
+type TDbMethodsList = "getAll" | "get" | "create" | "update" | "delete";
 export type TDb = Record<TDbMethodsList, TDbMethod>;
 
 export interface IDbReturn {

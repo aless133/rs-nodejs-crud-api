@@ -34,6 +34,15 @@ const db: TDb = {
     }
     return { err: { code: EDbErrors.INVALID_DATA, message: "No userId" } };
   },
+  create({}) {
+    return { err: { code: EDbErrors.INVALID_DATA, message: "No userId" } };
+  },
+  update({ params: { userId } }) {
+    return { err: { code: EDbErrors.INVALID_DATA, message: "No userId" } };
+  },
+  delete({ params: { userId } }) {
+    return { err: { code: EDbErrors.INVALID_DATA, message: "No userId" } };
+  },
 };
 
 export const dbCall = (p: IApiCall): IDbReturn => {

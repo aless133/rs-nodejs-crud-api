@@ -1,5 +1,6 @@
 import { IncomingMessage } from "node:http";
 import { IParsedRequest, IApiCall, IDbReturn, IApiReturn, EDbErrors } from "./types";
+import { getBody } from "./common";
 
 export enum messages {
   BAD_REQ = "Bad request",
@@ -12,12 +13,35 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
   const parts = req.url.split("/").filter((e) => !!e);
 
   //all
-  if (parts[1] === "users" && parts.length === 2) {
+  if (req.method == "GET" && parts[1] === "users" && parts.length === 2) {
     return { api: { method: "getAll", params: {} } };
   }
 
   //single
-  else if (parts[1] === "users" && parts.length === 3) {
+  else if (req.method == "GET" && parts[1] === "users" && parts.length === 3) {
+    return { api: { method: "get", params: { userId: parts[2] } } };
+  }
+
+  //new
+  if (req.method == "POST" && parts[1] === "users" && parts.length === 2) {
+    const { err, json: data } = await jsonBody(req);
+    if (err) {
+      return { err: { code: 400, message: "Invalid data, no JSON" } };
+    }
+    return { api: { method: "create", params: {}, data } };
+  }
+
+  //update
+  if (req.method == "PUT" && parts[1] === "users" && parts.length === 3) {
+    const { err, json: data } = await jsonBody(req);
+    if (err) {
+      return { err: { code: 400, message: "Invalid data, no JSON" } };
+    }
+    return { api: { method: "update", params: { userId: parts[2] }, data } };
+  }
+
+  //delete
+  else if (req.method == "DELETE" && parts[1] === "users" && parts.length === 3) {
     return { api: { method: "get", params: { userId: parts[2] } } };
   }
 
@@ -36,7 +60,21 @@ export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
     return ret;
   } else if (dbRet.data) {
     return { code: 200, data: dbRet.data };
+  } else if (api.method === "delete") {
+    return { code: 204, data: "" };
   } else {
     return { code: 200, data: "" };
   }
+};
+
+const jsonBody = async (req: IncomingMessage) => {
+  const text = await getBody(req);
+  let err = false,
+    json = null;
+  try {
+    json = JSON.parse(text);
+  } catch (e) {
+    err = true;
+  }
+  return { err, json };
 };
