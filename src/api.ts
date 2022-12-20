@@ -42,7 +42,7 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
 
   //delete
   else if (req.method == "DELETE" && parts[1] === "users" && parts.length === 3) {
-    return { api: { method: "get", params: { userId: parts[2] } } };
+    return { api: { method: "delete", params: { userId: parts[2] } } };
   }
 
   //else 404
