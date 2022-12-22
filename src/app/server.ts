@@ -15,7 +15,6 @@ export const createServer = (port: number, action: TRequestHandler) => {
     try {
       ret = await action(req);
     } catch (err) {
-      //console.error(err);
       ret.code = 500;
       if (err instanceof Error) {
         ret.data = err.message;
@@ -25,13 +24,6 @@ export const createServer = (port: number, action: TRequestHandler) => {
     }
     res.statusCode = ret.code;
     console.log("result", ":" + port, ret.code, ret.data);
-    // if (ret.headers) {
-    //   Object.keys(ret.headers).forEach((k) => {
-    //     if (ret.headers) {
-    //       res.setHeader(k, ret.headers[k]);
-    //     }
-    //   });
-    // }
     if (typeof ret.data === "object") {
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(ret.data));

@@ -8,13 +8,13 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "npx eslint ./src",
-    "format": "npx eslint ./src --fix",
     "start": "npx eslint ./src && ts-node --esm src/index.ts",
-    "start:multi": "npx eslint ./src && ts-node --esm src/index.ts --multi",
     "start:dev": "nodemon run start",
+    "start:multi": "npx eslint ./src && ts-node --esm src/index.ts --multi",
     "start:dev:multi": "nodemon run start:multi",
     "build": "npx eslint ./src && webpack --mode=production",
-    "start:prod": "npm run build && node build/bundle.js"
+    "start:prod": "npm run build && node build/bundle.js",
+    "start:prod:multi": "npm run build && node build/bundle.js --multi"
   },
   "repository": {
     "type": "git",

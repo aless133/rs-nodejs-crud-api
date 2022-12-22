@@ -4,7 +4,7 @@ import { request, IncomingMessage } from "node:http";
 import { createServer } from "./server";
 import { dbCall } from "./db";
 import { getBody } from "./common";
-import { TRequestHandler, IParsedRequest, IApiReturn, IApiCall, IProcessMsg } from "./types";
+import { TRequestHandler, IApiReturn, IApiCall, IProcessMsg } from "./types";
 
 let port = 0;
 
@@ -12,11 +12,12 @@ export const initPrimary = (pport: number) => {
   port = pport;
   console.log(`Primary ${process.pid} is running on port :${port}`);
   const server = createServer(port, balanceRequest);
+
   // Fork workers.
   const numCPUs = cpus().length;
   balancerSetup({ portBegin: port + 1, portEnd: port + numCPUs });
   for (let i = 1; i <= numCPUs; i++) {
-    const worker = cluster.fork({ PORT: port + i });
+    const worker = cluster.fork({ PORT: port + i, QWE: 15 });
     worker.on("message", (msg: IProcessMsg) => {
       console.log(`Primary ${process.pid} on port :${port} got message`, msg);
       if (msg.action === "dbCall") {

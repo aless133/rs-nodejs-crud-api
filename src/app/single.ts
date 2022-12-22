@@ -1,8 +1,7 @@
 import process from "node:process";
 import { createServer } from "./server";
 import { dbCall } from "./db";
-import { IncomingMessage } from "node:http";
-import { TRequestHandler, IParsedRequest, IApiCall, IDbReturn, IApiReturn, IProcessMsg } from "./types";
+import { TRequestHandler } from "./types";
 import { parseRequest, apiReturn, messages } from "./api";
 
 let port = 0;
