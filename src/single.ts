@@ -10,7 +10,8 @@ let port = 0;
 export const initSingle = (pport: number) => {
   port = pport;
   console.log(`Single ${process.pid} is running on port :${port}`);
-  createServer(port, handleRequest);
+  const server = createServer(port, handleRequest);
+  return server;
 };
 
 export const handleRequest: TRequestHandler = async (req) => {

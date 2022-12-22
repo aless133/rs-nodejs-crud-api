@@ -20,6 +20,7 @@ export const initWorker = (pport: number) => {
       delete processMsgResolvers[msg.resolveId];
     }
   });
+  return server;
 };
 
 const processMsgResolvers: Record<string, (p: IApiReturn) => void> = {};

@@ -10,21 +10,26 @@ import cluster from "node:cluster";
 import { initSingle } from "./single";
 import { initPrimary } from "./primary";
 import { initWorker } from "./worker";
+import { Server } from "node:http";
 
 const isSingle = !process.argv.includes("--multi");
 const port = parseInt((process.env.PORT || "4000") as string);
 
+let appServer: Server;
+
 //single
 if (isSingle) {
-  initSingle(port);
+  appServer = initSingle(port);
 }
 
 //primary
 else if (cluster.isPrimary) {
-  initPrimary(port);
+  appServer = initPrimary(port);
 }
 
 //worker
 else {
-  initWorker(port);
+  appServer = initWorker(port);
 }
+
+export default appServer;

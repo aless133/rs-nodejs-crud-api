@@ -11,7 +11,7 @@ let port = 0;
 export const initPrimary = (pport: number) => {
   port = pport;
   console.log(`Primary ${process.pid} is running on port :${port}`);
-  createServer(port, balanceRequest);
+  const server = createServer(port, balanceRequest);
   // Fork workers.
   const numCPUs = cpus().length;
   balancerSetup({ portBegin: port + 1, portEnd: port + numCPUs });
@@ -28,6 +28,7 @@ export const initPrimary = (pport: number) => {
       }
     });
   }
+  return server;
 };
 
 const balancer = {
