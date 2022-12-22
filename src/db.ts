@@ -35,7 +35,7 @@ const db: TDb = {
   },
   create({ data }) {
     if (!data || !isValidUserData(data)) {
-      return { err: { code: EDbErrors.NOT_FOUND, message: "Invalid user data" } };
+      return { err: { code: EDbErrors.INVALID_DATA, message: "Invalid user data" } };
     } else {
       const userId = uuidv4();
       database[userId] = { ...data, id: userId };
@@ -50,7 +50,7 @@ const db: TDb = {
     } else if (!database[userId]) {
       return { err: { code: EDbErrors.NOT_FOUND, message: "User not found" } };
     } else if (!data || !isValidUserData(data)) {
-      return { err: { code: EDbErrors.NOT_FOUND, message: "Invalid user data" } };
+      return { err: { code: EDbErrors.INVALID_DATA, message: "Invalid user data" } };
     } else {
       database[userId] = data;
       return { data: database[userId] };
