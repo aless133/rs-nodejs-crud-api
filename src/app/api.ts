@@ -12,6 +12,11 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
   if (!req.url) return { err: { code: 404, message: "Endpoint not found" } };
   const parts = req.url.split("/").filter((e) => !!e);
 
+  //error for demo/test
+  if (req.method == "GET" && parts[1] === "error") {
+    throw Error("Example Server Error");
+  }
+
   //all
   if (req.method == "GET" && parts[1] === "users" && parts.length === 2) {
     return { api: { method: "getAll", params: {} } };

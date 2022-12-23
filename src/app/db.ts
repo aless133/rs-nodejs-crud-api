@@ -32,10 +32,10 @@ const db: TDb = {
       return { err: { code: EDbErrors.INVALID_DATA, message: "No userId" } };
     } else if (!uuidValidateV4(userId)) {
       return { err: { code: EDbErrors.INVALID_DATA, message: "Invalid userId" } };
-    } else if (!database[userId]) {
-      return { err: { code: EDbErrors.NOT_FOUND, message: "User not found" } };
     } else if (!data || !isValidUserData(data)) {
       return { err: { code: EDbErrors.INVALID_DATA, message: "Invalid user data" } };
+    } else if (!database[userId]) {
+      return { err: { code: EDbErrors.NOT_FOUND, message: "User not found" } };
     } else {
       database[userId] = data;
       return { data: database[userId] };

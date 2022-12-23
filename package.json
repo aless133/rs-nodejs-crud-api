@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
     "lint": "npx eslint ./src",
     "start": "npx eslint ./src && ts-node --esm src/index.ts",
     "start:dev": "nodemon run start",

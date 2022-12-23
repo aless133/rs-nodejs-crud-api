@@ -8,10 +8,20 @@ afterAll(() => {
   server.close();
 });
 
-describe("Error test CRUD API", () => {
+describe("Error/bad requests test CRUD API", () => {
   test("unknown endpoint", async () => {
     const response = await request(server).get("/dont/know/what");
     expect(response.statusCode).toBe(404);
+  });
+
+  test("test server errror", async () => {
+    const response = await request(server).get("/api/error");
+    expect(response.statusCode).toBe(500);
+  });
+
+  test("create nojson user", async () => {
+    const response = await request(server).post("/api/users").send('asdasda');
+    expect(response.statusCode).toBe(400);
   });
 
   test("create bad user", async () => {
@@ -20,7 +30,7 @@ describe("Error test CRUD API", () => {
   });
 
   test("get bad id user", async () => {
-    const response = await request(server).get(`/api/users/${td.uuid1}`);
+    const response = await request(server).get(`/api/users/${td.uuid1bad}`);
     expect(response.statusCode).toBe(400);
   });
 
@@ -30,17 +40,27 @@ describe("Error test CRUD API", () => {
   });
 
   test("update bad id user", async () => {
-    const response = await request(server).put(`/api/users/${td.uuid1}`).send();
+    const response = await request(server).put(`/api/users/${td.uuid1bad}`).send(td.userData1);
+    expect(response.statusCode).toBe(400);
+  });
+
+  test("update no data user", async () => {
+    const response = await request(server).put(`/api/users/${td.uuid2}`);
+    expect(response.statusCode).toBe(400);
+  });
+
+  test("update bad data user", async () => {
+    const response = await request(server).put(`/api/users/${td.uuid2}`).send(td.userBad1);
     expect(response.statusCode).toBe(400);
   });
 
   test("update not found user", async () => {
-    const response = await request(server).put(`/api/users/${td.uuid2}`);
+    const response = await request(server).put(`/api/users/${td.uuid2}`).send(td.userData1);
     expect(response.statusCode).toBe(404);
   });
 
   test("delete bad id user", async () => {
-    const response = await request(server).delete(`/api/users/${td.uuid1}`);
+    const response = await request(server).delete(`/api/users/${td.uuid1bad}`);
     expect(response.statusCode).toBe(400);
   });
 
