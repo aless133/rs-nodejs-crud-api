@@ -37,7 +37,7 @@ const db: TDb = {
     } else if (!database[userId]) {
       return { err: { code: EDbErrors.NOT_FOUND, message: "User not found" } };
     } else {
-      database[userId] = data;
+      database[userId] = { ...data, id: userId };
       return { data: database[userId] };
     }
   },

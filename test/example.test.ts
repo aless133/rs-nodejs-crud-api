@@ -34,7 +34,7 @@ describe("Example Test", () => {
     expect(response.statusCode).toBe(204);
   });
 
-  test("get user", async () => {
+  test("get deleted user", async () => {
     const response = await request(server).get(`/api/users/${id1}`);
     expect(response.statusCode).toBe(404);
   });
