@@ -1,12 +1,7 @@
 import request from "supertest";
-import app from "../src/app/app";
 import td from "./test.data";
 
-const server = app.start(td.startApp);
-
-afterAll(() => {
-  server.close();
-});
+const server=td.server;
 
 describe("Error/bad requests test CRUD API", () => {
   test("unknown endpoint", async () => {

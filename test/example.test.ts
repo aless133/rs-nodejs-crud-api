@@ -1,18 +1,15 @@
 import request from "supertest";
-import app from "../src/app/app";
 import td from "./test.data";
 
-const server = app.start(td.startApp);
-
-afterAll(() => {
-  server.close();
-});
+const server=td.server;
 
 describe("Example Test", () => {
   test("getAll when empty", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual([]);
+    if (!td.serverStarted) {
+      expect(response.body).toEqual([]);
+    }
   });
 
   let id1 = "";
