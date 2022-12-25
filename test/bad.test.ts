@@ -9,7 +9,7 @@ describe("Error/bad requests test CRUD API", () => {
     expect(response.statusCode).toBe(404);
   });
 
-  test("test server errror", async () => {
+  test("test server error", async () => {
     const response = await request(server).get("/api/error");
     expect(response.statusCode).toBe(500);
   });
@@ -21,6 +21,11 @@ describe("Error/bad requests test CRUD API", () => {
 
   test("create bad user", async () => {
     const response = await request(server).post("/api/users").send(td.userBad1);
+    expect(response.statusCode).toBe(400);
+  });
+
+  test("post to bad url", async () => {
+    const response = await request(server).post(`/api/users/${td.uuid2}`).send(td.userData1);
     expect(response.statusCode).toBe(400);
   });
 

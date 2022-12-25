@@ -12,42 +12,40 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
   if (!req.url) return { err: { code: 404, message: "Endpoint not found" } };
   const parts = req.url.split("/").filter((e) => !!e);
 
-  //error for demo/test
-  if (req.method == "GET" && parts[1] === "error") {
+  // /api/error for demo/test
+  if (parts[1] === "error") {
     throw Error("Example Server Error");
   }
 
-  //all
-  if (req.method == "GET" && parts[1] === "users" && parts.length === 2) {
-    return { api: { method: "getAll", params: {} } };
-  }
-
-  //single
-  else if (req.method == "GET" && parts[1] === "users" && parts.length === 3) {
-    return { api: { method: "get", params: { userId: parts[2] } } };
-  }
-
-  //new
-  if (req.method == "POST" && parts[1] === "users" && parts.length === 2) {
-    const { err, json: data } = await jsonBody(req);
-    if (err) {
-      return { err: { code: 400, message: "Invalid data, no JSON" } };
+  // /api/users
+  if (parts[1] === "users" && parts.length === 2) {
+    if (req.method == "GET") {
+      return { api: { method: "getAll", params: {} } };
     }
-    return { api: { method: "create", params: {}, data } };
-  }
-
-  //update
-  if (req.method == "PUT" && parts[1] === "users" && parts.length === 3) {
-    const { err, json: data } = await jsonBody(req);
-    if (err) {
-      return { err: { code: 400, message: "Invalid data, no JSON" } };
+    if (req.method == "POST") {
+      const { err, json: data } = await jsonBody(req);
+      if (err) {
+        return { err: { code: 400, message: "Invalid data, no JSON" } };
+      }
+      return { api: { method: "create", params: {}, data } };
     }
-    return { api: { method: "update", params: { userId: parts[2] }, data } };
+    return { err: { code: 400, message: "Bad method" } };
   }
 
-  //delete
-  else if (req.method == "DELETE" && parts[1] === "users" && parts.length === 3) {
-    return { api: { method: "delete", params: { userId: parts[2] } } };
+  // /api/users/123
+  else if (parts[1] === "users" && parts.length === 3) {
+    if (req.method == "GET") {
+      return { api: { method: "get", params: { userId: parts[2] } } };
+    } else if (req.method == "DELETE") {
+      return { api: { method: "delete", params: { userId: parts[2] } } };
+    } else if (req.method == "PUT") {
+      const { err, json: data } = await jsonBody(req);
+      if (err) {
+        return { err: { code: 400, message: "Invalid data, no JSON" } };
+      }
+      return { api: { method: "update", params: { userId: parts[2] }, data } };
+    }
+    return { err: { code: 400, message: "Bad method" } };
   }
 
   //else 404
