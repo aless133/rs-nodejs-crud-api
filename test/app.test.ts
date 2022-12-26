@@ -1,7 +1,7 @@
 import request from "supertest";
 import td from "./test.data";
 
-const server=td.server;
+const server = td.server;
 
 describe("Test CRUD API", () => {
   test("getAll when empty", async () => {

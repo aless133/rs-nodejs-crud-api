@@ -1,7 +1,7 @@
 import request from "supertest";
 import td from "./test.data";
 
-const server=td.server;
+const server = td.server;
 
 describe("Example Test", () => {
   test("getAll when empty", async () => {
@@ -35,5 +35,4 @@ describe("Example Test", () => {
     const response = await request(server).get(`/api/users/${id1}`);
     expect(response.statusCode).toBe(404);
   });
-
 });

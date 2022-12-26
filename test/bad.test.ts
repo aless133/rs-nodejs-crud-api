@@ -1,7 +1,7 @@
 import request from "supertest";
 import td from "./test.data";
 
-const server=td.server;
+const server = td.server;
 
 describe("Error/bad requests test CRUD API", () => {
   test("unknown endpoint", async () => {
@@ -15,7 +15,7 @@ describe("Error/bad requests test CRUD API", () => {
   });
 
   test("create nojson user", async () => {
-    const response = await request(server).post("/api/users").send('asdasda');
+    const response = await request(server).post("/api/users").send("asdasda");
     expect(response.statusCode).toBe(400);
   });
 
