@@ -1,4 +1,5 @@
 import cluster from "node:cluster";
+import child_process from "node:child_process";
 import { cpus } from "node:os";
 import { request, IncomingMessage } from "node:http";
 import { createServer } from "./server";
@@ -12,6 +13,8 @@ export const initPrimary = (pport: number) => {
   port = pport;
   console.log(`Primary ${process.pid} is running on port :${port}`);
   const server = createServer(port, balanceRequest);
+
+  const dataserver = child_process.fork("./src/app/dataserver.ts");
 
   // Fork workers.
   const numCPUs = cpus().length;
