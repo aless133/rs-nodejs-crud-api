@@ -15,7 +15,7 @@ describe("Example Test", () => {
   let id1 = "";
   test("create new user", async () => {
     const response = await request(server).post("/api/users").send(td.userData1);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(response.body).toEqual({ id: expect.any(String), ...td.userData1 });
     id1 = response.body.id;
   });
