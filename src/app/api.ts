@@ -63,10 +63,12 @@ export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
       ret.code = 404;
     }
     return ret;
-  } else if (dbRet.data) {
-    return { code: 200, data: dbRet.data };
+  } else if (api.method === "create" && dbRet.data) {
+    return { code: 201, data: dbRet.data };
   } else if (api.method === "delete") {
     return { code: 204, data: "" };
+  } else if (dbRet.data) {
+    return { code: 200, data: dbRet.data };
   } else {
     return { code: 200, data: "" };
   }

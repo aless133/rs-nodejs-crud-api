@@ -28,7 +28,7 @@ describe("Test CRUD API", () => {
   let id1 = "";
   test("create new user 1", async () => {
     const response = await request(server).post("/api/users").send(td.userData1);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(response.body).toEqual({ id: expect.any(String), ...td.userData1 });
     id1 = response.body.id;
   });
@@ -42,7 +42,7 @@ describe("Test CRUD API", () => {
   let id2 = "";
   test("create new user 2", async () => {
     const response = await request(server).post("/api/users").send(td.userData1);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(response.body).toEqual({ id: expect.any(String), ...td.userData1 });
     id2 = response.body.id;
   });
