@@ -15,7 +15,7 @@ export const initPrimary = (pport: number) => {
   const numCPUs = cpus().length;
   balancerSetup({ portBegin: port + 1, portEnd: port + numCPUs });
   for (let i = 1; i <= numCPUs; i++) {
-    const worker = cluster.fork({ PORT: port + i, QWE: 15 });
+    const worker = cluster.fork({ PORT: port + i });
     worker.on("message", (msg: IProcessMsg) => {
       console.log(`Primary ${process.pid} on port :${port} got message`, msg);
       if (msg.action === "dbCall") {

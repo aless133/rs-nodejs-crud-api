@@ -20,7 +20,7 @@ const start: TAppStart = ({ isSingle, port }) => {
 
   //worker
   else {
-    appServer = initWorker(parseInt((process.env.PORT || "4444") as string));
+    appServer = initWorker(port);
     // appServer = initWorker(port);
   }
   return appServer;
