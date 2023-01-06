@@ -16,10 +16,11 @@ export const createServer = (port: number, action: TRequestHandler) => {
       ret = await action(req);
     } catch (err) {
       ret.code = 500;
+      ret.data = { error: { code: 500, message: "" } };
       if (err instanceof Error) {
-        ret.data = err.message;
+        ret.data.error.message = err.message;
       } else {
-        ret.data = err as string;
+        ret.data.error.message = err as string;
       }
     }
     res.statusCode = ret.code;

@@ -11,9 +11,12 @@ export interface IUser extends IUserData {
 
 export type TRequestHandler = (res: IncomingMessage) => Promise<IApiReturn>;
 
+interface IApiError {
+  error: IError;
+}
 export interface IApiReturn {
   code: number;
-  data: string | IUser | IUser[];
+  data: string | IApiError | IUser | IUser[];
   headers?: IncomingHttpHeaders;
 }
 

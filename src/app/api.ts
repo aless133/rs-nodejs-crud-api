@@ -55,7 +55,8 @@ export const parseRequest = async (req: IncomingMessage): Promise<IParsedRequest
 
 export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
   if (dbRet.err) {
-    const ret: IApiReturn = { code: 0, data: "Database error: " + dbRet.err.message };
+    const ret: IApiReturn = { code: 0, data: { error: dbRet.err } };
+    // ret.data.error.message = "Database error: " + ret.data.error.message;
     if (dbRet.err.code === EDbErrors.INVALID_DATA) {
       ret.code = 400;
     } else if (dbRet.err.code === EDbErrors.NOT_FOUND) {

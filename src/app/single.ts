@@ -16,7 +16,7 @@ export const initSingle = (pport: number) => {
 export const handleRequest: TRequestHandler = async (req) => {
   const parsed = await parseRequest(req);
   if (parsed.err) {
-    return { code: parsed.err.code, data: parsed.err.message };
+    return { code: parsed.err.code, data: { error: parsed.err } };
   } else if (parsed.api) {
     const dbRet = dbCall(parsed.api);
     return apiReturn(parsed.api, dbRet);
