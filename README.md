@@ -8,7 +8,7 @@
 - **GET** `api/users`
 - **GET** `api/users/${userId}` 
 - **POST** `api/users`
-- **PUT** `api/users/{userId}`
+- **PUT** `api/users/${userId}`
 - **DELETE** `api/users/${userId}`
 
 ### User record
