@@ -23,25 +23,23 @@
 
 ## Usage
 
-**Config**
-
+#### Config
 * Default PORT is 4000
 * To change default port rename .env.example to .env and set PORT in it
 
-**Development**
-
+#### Development
 `npm run start:dev`
 
 * Server started in development mode @ `http://localhost:PORT` with nodemon
 
-**Production**
+#### Production
 
 `npm run start:prod`
 
 * Starts the build process
 * Server from budled file started in production mode @ `http://localhost:PORT` without nodemon
 
-**Milti**
+#### Multi
 
 `npm run start:multi`
 
@@ -51,15 +49,13 @@
 
 ## Testing
 
-**Commands**
+#### Commands
 
-`npm run test` runs all tests, no need to run server, it will be imported in test and run in single-mode.
+* `npm run test` runs all tests, no need to run server, it will be imported in test and run in single-mode.
+* `npm run test:coverage` same, with coverage report.
+* If you want to test by http you have to start server (single or multi) and then use `npm run test:server` command. For Windows there are 2 cmd-files (`test.server.cmd` and `test.server.multi.cmd`) making this.
 
-`npm run test:coverage` same, with coverage report.
-
-If you want to test by http you have to start server (single or multi) and then use `npm run test:server` command. For Windows there are 2 cmd-files (`test.server.cmd` and `test.server.multi.cmd`) making this.
-
-**Scenarios**
+#### Scenarios
 * `example.test` - example test from assignment
 * `bad.test` - all types of errors
 * `app.test` - advanced test scenario with multiples objects created/updated/deleted
