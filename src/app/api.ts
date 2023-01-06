@@ -1,6 +1,5 @@
 import { IncomingMessage } from "node:http";
 import { IParsedRequest, IApiCall, IDbReturn, IApiReturn, EDbErrors } from "./types";
-import { getBody } from "./common";
 
 export enum messages {
   BAD_REQ = "Bad request",
@@ -72,6 +71,20 @@ export const apiReturn = (api: IApiCall, dbRet: IDbReturn): IApiReturn => {
   } else {
     return { code: 200, data: "" };
   }
+};
+
+const getBody = (msg: IncomingMessage): Promise<string> => {
+  return new Promise((resolve) => {
+    const body: Buffer[] = [];
+    msg
+      .on("data", (chunk: Buffer) => {
+        body.push(chunk);
+      })
+      .on("end", () => {
+        const bodyFull = Buffer.concat(body).toString();
+        resolve(bodyFull);
+      });
+  });
 };
 
 const jsonBody = async (req: IncomingMessage) => {
