@@ -1,13 +1,17 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+const port = parseInt((process.env.PORT || "4000") as string);
+
 import app from "../src/app/app";
 
-const serverArg = process.argv.find((e) => e.startsWith("-server="));
+const serverArg = process.argv.find((e) => e==="-server");
 let serverStarted = false;
 let server: string | ReturnType<typeof app.start> = "";
 if (serverArg) {
   serverStarted = true;
-  server = serverArg.split("=")[1];
+  server = 'http://localhost:'+port;
 } else {
-  server = app.start({ isSingle: true, port: 4000 });
+  server = app.start({ isSingle: true, port });
   afterAll(() => {
     (server as ReturnType<typeof app.start>).close();
   });
