@@ -7,9 +7,7 @@ describe("Test CRUD API", () => {
   test("getAll when empty", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    if (!td.serverStarted) {
-      expect(response.body).toEqual([]);
-    }
+    expect(response.body).toEqual([]);
   });
 
   test("create bad user", async () => {
@@ -20,9 +18,7 @@ describe("Test CRUD API", () => {
   test("getAll after bad creation", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    if (!td.serverStarted) {
-      expect(response.body).toEqual([]);
-    }
+    expect(response.body).toEqual([]);
   });
 
   let id1 = "";
@@ -50,7 +46,7 @@ describe("Test CRUD API", () => {
   test("getAll after 2 create", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBeGreaterThanOrEqual(2);
+    expect(response.body.length).toBe(2);
   });
 
   test("update user 1", async () => {
@@ -73,7 +69,7 @@ describe("Test CRUD API", () => {
   test("getAll after 1 delete", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBeGreaterThanOrEqual(1);
+    expect(response.body.length).toBe(1);
   });
 
   test("get deleted user", async () => {
@@ -85,5 +81,16 @@ describe("Test CRUD API", () => {
     const response = await request(server).get(`/api/users/${id2}`);
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ id: id2, ...td.userData1 });
+  });
+
+  test("delete user 2", async () => {
+    const response = await request(server).delete(`/api/users/${id2}`);
+    expect(response.statusCode).toBe(204);
+  });
+
+  test("getAll after 2 delete", async () => {
+    const response = await request(server).get("/api/users");
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual([]);
   });
 });

@@ -7,9 +7,7 @@ describe("Example Test", () => {
   test("getAll when empty", async () => {
     const response = await request(server).get("/api/users");
     expect(response.statusCode).toBe(200);
-    if (!td.serverStarted) {
-      expect(response.body).toEqual([]);
-    }
+    expect(response.body).toEqual([]);
   });
 
   let id1 = "";

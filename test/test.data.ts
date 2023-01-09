@@ -5,10 +5,8 @@ const port = parseInt((process.env.PORT || "4000") as string);
 import app from "../src/app/app";
 
 const serverArg = process.argv.find((e) => e==="-server");
-let serverStarted = false;
 let server: string | ReturnType<typeof app.start> = "";
 if (serverArg) {
-  serverStarted = true;
   server = 'http://localhost:'+port;
 } else {
   server = app.start({ isSingle: true, port });
@@ -31,4 +29,4 @@ const userData2 = {
 const uuid1bad = "123";
 const uuid2 = "5bfaaa38-6fa1-4eb2-b579-74e04cd2c058"; //valid but non exists
 
-export default { serverStarted, server, userBad1, userData1, userData2, uuid1bad, uuid2 };
+export default { server, userBad1, userData1, userData2, uuid1bad, uuid2 };
