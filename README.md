@@ -19,6 +19,7 @@
 
 ## Installation
 1. Clone/download repo
+2. Switch to develop branch `git checkout -b develop origin/develop`
 2. `npm install`
 
 ## Usage
