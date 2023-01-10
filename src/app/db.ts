@@ -70,13 +70,13 @@ function isValidUserData(obj: any) {
     Object.keys(obj).length == 3 &&
     "username" in obj &&
     typeof obj.username === "string" &&
-    !!obj.username &&
+    obj.username.length > 0 &&
     "age" in obj &&
     typeof obj.age === "number" &&
-    !!obj.age &&
+    obj.age >= 0 &&
     "hobbies" in obj &&
     Array.isArray(obj.hobbies) &&
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    obj.hobbies.every((h: any) => typeof h === "string")
+    obj.hobbies.every((h: any) => typeof h === "string" && h.length > 0)
   );
 }
