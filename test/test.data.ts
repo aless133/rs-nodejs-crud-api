@@ -4,10 +4,10 @@ const port = parseInt((process.env.PORT || "4000") as string);
 
 import app from "../src/app/app";
 
-const serverArg = process.argv.find((e) => e==="-server");
+const serverArg = process.argv.find((e) => e === "-server");
 let server: string | ReturnType<typeof app.start> = "";
 if (serverArg) {
-  server = 'http://localhost:'+port;
+  server = "http://localhost:" + port;
 } else {
   server = app.start({ isSingle: true, port });
   afterAll(() => {
