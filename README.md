@@ -5,11 +5,15 @@
 * Data is stored in-memory-database and is cleared after each restart
 
 ### Endpoints
-- **GET** `api/users`
-- **GET** `api/users/${userId}` 
-- **POST** `api/users`
-- **PUT** `api/users/${userId}`
-- **DELETE** `api/users/${userId}`
+- **GET** `api/users` - returns all users data + code 200 (if all is ok, same below)
+- **GET** `api/users/${userId}` - get one existing user data + code 200
+- **POST** `api/users` - create new user (data taken from request body), generate id, return new user data + code 201
+- **PUT** `api/users/${userId}` - update existing user data (data taken from request body), return updated user data + code 200
+- **DELETE** `api/users/${userId}` - delete existing user, return code 204
+
+#### Endpoint validation
+- Calling wrong method on existing endpoint results as 404, as it's written in assignment
+- Don't use ending slashes in URLs, it results as 404
 
 ### User record
 - `id` — unique identifier (`string`, `uuid`) generated on server side
