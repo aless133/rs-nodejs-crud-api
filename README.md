@@ -17,6 +17,10 @@
 - `age` — user's age (`number`, **required**)
 - `hobbies` — user's hobbies (`array` of `strings` or empty `array`, **required**)
 
+#### Data validation
+- userId have to be valid uuidv4 (for GET user, PUT user, DELETE user endpoints)
+- request body have to be valid json-encoded string, data have to be _complete user record_ except `id` field (partial update e.g. PATCH is not allowed), additional fields are not allowed (for POST user, PUT user).
+
 ## Installation
 1. Clone/download repo
 2. Switch to develop branch `git checkout -b develop origin/develop`
