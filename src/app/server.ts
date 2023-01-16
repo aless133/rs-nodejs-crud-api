@@ -55,6 +55,12 @@ export const createProxy = (port: number, getPort: () => number) => {
       proxyRes.pipe(res);
     });
 
+    proxy.on("error", () => {
+      res.statusCode = 500;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ error: { code: 500, message: "Server Error" } }));
+    });
+
     req.pipe(proxy);
   });
 
