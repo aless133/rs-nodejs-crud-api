@@ -6,6 +6,8 @@ import { createServer } from "./server";
 import { dbCall } from "./db";
 import { getBody } from "./common";
 import { TRequestHandler, IApiReturn, IApiCall, IProcessMsg } from "./types";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 let port = 0;
 
@@ -14,7 +16,13 @@ export const initPrimary = (pport: number) => {
   console.log(`Primary ${process.pid} is running on port :${port}`);
   const server = createServer(port, balanceRequest);
 
-  const dataserver = child_process.fork("./src/app/dataserver.ts");
+  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+  if (process.env.NODE_ENV === "production") {
+    const __dirname1 = dirname(fileURLToPath(import.meta.url));
+    const dataserver = child_process.fork(__dirname1 + "/dataserver.bundle.js");
+  } else {
+    const dataserver = child_process.fork("./src/app/dataserver.ts");
+  }
 
   // Fork workers.
   const numCPUs = cpus().length;

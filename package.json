@@ -14,8 +14,8 @@
     "start:multi": "npx eslint ./src && ts-node --esm src/index.ts --multi",
     "start:multi:dev": "nodemon run start:multi",
     "build": "npx eslint ./src && webpack --mode=production",
-    "start:prod": "npm run build && node build/bundle.js",
-    "start:prod:multi": "npm run build && node build/bundle.js --multi"
+    "start:prod": "npm run build && node build/index.bundle.js",
+    "start:prod:multi": "npm run build && node build/index.bundle.js --multi"
   },
   "repository": {
     "type": "git",
